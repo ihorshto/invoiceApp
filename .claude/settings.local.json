@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit -m 'docs: add InvoiceApp design spec *)",
+      "Bash(php --version)",
+      "Bash(composer --version)",
+      "Bash(composer create-project *)",
+      "Bash(rsync -av --exclude='.git' --exclude='README.md' /tmp/invoice-base/ /Users/ihorshtohryn/Documents/web2026/invoiceApp/)",
+      "Bash(php artisan *)",
+      "Bash(composer require *)",
+      "Bash(./vendor/bin/sail up *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git commit -m 'docs: add step-01 setup documentation *)",
+      "Bash(./vendor/bin/sail artisan *)"
+    ]
+  }
+}
