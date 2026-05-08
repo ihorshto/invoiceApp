@@ -12,7 +12,10 @@
       "Bash(./vendor/bin/sail up *)",
       "Bash(git commit -m ' *)",
       "Bash(git commit -m 'docs: add step-01 setup documentation *)",
-      "Bash(./vendor/bin/sail artisan *)"
+      "Bash(./vendor/bin/sail artisan *)",
+      "Bash(git commit -m 'docs: add step-02 auth documentation *)",
+      "Bash(./vendor/bin/sail npm *)"
     ]
-  }
+  },
+  "outputStyle": "default"
 }
