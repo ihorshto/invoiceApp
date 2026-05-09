@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Settings\CompanyController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -15,6 +16,7 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     Route::resource('clients', ClientController::class);
+    Route::resource('products', ProductController::class)->except(['show']);
 
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('company', [CompanyController::class, 'edit'])->name('company');
