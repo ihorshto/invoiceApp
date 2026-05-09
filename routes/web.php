@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\Settings\CompanyController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -12,6 +13,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
     })->name('dashboard');
+
+    Route::resource('clients', ClientController::class);
 
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('company', [CompanyController::class, 'edit'])->name('company');
