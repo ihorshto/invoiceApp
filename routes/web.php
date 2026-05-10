@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('products', ProductController::class)->except(['show']);
     Route::resource('invoices', InvoiceController::class);
     Route::post('invoices/{invoice}/mark-paid', [InvoiceController::class, 'markPaid'])->name('invoices.mark-paid');
+    Route::get('invoices/{invoice}/pdf', [InvoiceController::class, 'pdf'])->name('invoices.pdf');
 
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('company', [CompanyController::class, 'edit'])->name('company');

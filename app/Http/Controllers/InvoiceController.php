@@ -6,6 +6,7 @@ use App\Models\Client;
 use App\Models\Invoice;
 use App\Models\Product;
 use App\Modules\Invoices\Actions\CreateInvoiceAction;
+use App\Modules\Invoices\Actions\GeneratePdfAction;
 use App\Modules\Invoices\Actions\MarkAsPaidAction;
 use App\Modules\Invoices\Actions\UpdateInvoiceAction;
 use App\Modules\Invoices\Services\InvoiceService;
@@ -108,6 +109,11 @@ class InvoiceController extends Controller
     {
         $action->execute($invoice);
         return redirect()->route('invoices.show', $invoice);
+    }
+
+    public function pdf(Invoice $invoice, GeneratePdfAction $action): \Illuminate\Http\Response
+    {
+        return $action->stream($invoice);
     }
 
     public function destroy(Invoice $invoice): RedirectResponse
