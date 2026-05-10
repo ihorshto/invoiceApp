@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\Auth;
 
-use App\Jobs\SendOtpEmailJob;
+use App\Mail\OtpMail;
 use App\Models\LoginOtp;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Queue;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class OtpLoginTest extends TestCase
@@ -21,28 +21,28 @@ class OtpLoginTest extends TestCase
             ->assertInertia(fn ($page) => $page->component('Auth/Login'));
     }
 
-    public function test_valid_credentials_dispatch_otp_and_redirect_to_verify(): void
+    public function test_valid_credentials_send_otp_and_redirect_to_verify(): void
     {
-        Queue::fake();
+        Mail::fake();
         $user = User::factory()->create(['password' => Hash::make('password')]);
 
         $this->post(route('login'), ['email' => $user->email, 'password' => 'password'])
             ->assertRedirect(route('login.verify'));
 
-        Queue::assertPushed(SendOtpEmailJob::class);
+        Mail::assertSent(OtpMail::class, fn ($mail) => $mail->hasTo($user->email));
         $this->assertDatabaseHas('login_otps', ['user_id' => $user->id]);
         $this->assertEquals($user->id, session('otp_user_id'));
     }
 
     public function test_invalid_credentials_fail_with_error(): void
     {
-        Queue::fake();
+        Mail::fake();
         $user = User::factory()->create(['password' => Hash::make('password')]);
 
         $this->post(route('login'), ['email' => $user->email, 'password' => 'wrong'])
             ->assertSessionHasErrors('email');
 
-        Queue::assertNothingPushed();
+        Mail::assertNothingSent();
     }
 
     public function test_verify_page_requires_session(): void
@@ -53,7 +53,7 @@ class OtpLoginTest extends TestCase
 
     public function test_correct_otp_logs_in_user(): void
     {
-        Queue::fake();
+        Mail::fake();
         $user = User::factory()->create(['password' => Hash::make('password')]);
         $code = '123456';
 

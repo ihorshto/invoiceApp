@@ -2,9 +2,10 @@
 
 namespace App\Modules\Auth\Actions;
 
-use App\Jobs\SendOtpEmailJob;
+use App\Mail\OtpMail;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class GenerateOtpAction
 {
@@ -24,6 +25,6 @@ class GenerateOtpAction
             'created_at' => now(),
         ]);
 
-        SendOtpEmailJob::dispatch($user, $code);
+        Mail::to($user->email)->send(new OtpMail($user, $code));
     }
 }
