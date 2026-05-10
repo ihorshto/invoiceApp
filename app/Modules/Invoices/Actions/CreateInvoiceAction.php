@@ -1,0 +1,58 @@
+<?php
+
+namespace App\Modules\Invoices\Actions;
+
+use App\Models\Company;
+use App\Models\Invoice;
+
+class CreateInvoiceAction
+{
+    public function __construct(private InvoiceNumberGenerator $generator) {}
+
+    public function execute(Company $company, array $data): Invoice
+    {
+        $items    = $data['items'] ?? [];
+        $subtotal = 0;
+        $vatTotal = 0;
+
+        foreach ($items as $item) {
+            $ht        = round($item['unit_price'] * $item['quantity'], 2);
+            $vat       = round($ht * ($item['vat_rate'] / 100), 2);
+            $subtotal += $ht;
+            $vatTotal += $vat;
+        }
+
+        $invoice = $company->invoices()->create([
+            'client_id'  => $data['client_id'],
+            'number'     => $this->generator->generate($company),
+            'status'     => 'draft',
+            'issue_date' => $data['issue_date'],
+            'due_date'   => $data['due_date'],
+            'subtotal'   => $subtotal,
+            'vat_amount' => $vatTotal,
+            'total'      => $subtotal + $vatTotal,
+            'currency'   => $data['currency'] ?? 'EUR',
+            'notes'      => $data['notes'] ?? null,
+            'footer'     => $data['footer'] ?? null,
+        ]);
+
+        foreach ($items as $index => $item) {
+            $ht  = round($item['unit_price'] * $item['quantity'], 2);
+            $vat = round($ht * ($item['vat_rate'] / 100), 2);
+
+            $invoice->items()->create([
+                'product_id'  => $item['product_id'] ?? null,
+                'description' => $item['description'],
+                'unit_price'  => $item['unit_price'],
+                'unit'        => $item['unit'] ?? 'unité',
+                'quantity'    => $item['quantity'],
+                'vat_rate'    => $item['vat_rate'],
+                'total_ht'    => $ht,
+                'total_ttc'   => $ht + $vat,
+                'sort_order'  => $index,
+            ]);
+        }
+
+        return $invoice->load('items');
+    }
+}

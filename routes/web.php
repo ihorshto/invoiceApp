@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Settings\CompanyController;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,8 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('clients', ClientController::class);
     Route::resource('products', ProductController::class)->except(['show']);
+    Route::resource('invoices', InvoiceController::class);
+    Route::post('invoices/{invoice}/mark-paid', [InvoiceController::class, 'markPaid'])->name('invoices.mark-paid');
 
     Route::prefix('settings')->name('settings.')->group(function () {
         Route::get('company', [CompanyController::class, 'edit'])->name('company');
