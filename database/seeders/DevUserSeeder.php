@@ -12,7 +12,7 @@ class DevUserSeeder extends Seeder
     public function run(): void
     {
         $user = User::firstOrCreate(
-            ['email' => 'dev@invoiceapp.test'],
+            ['email' => env('DEV_USER_EMAIL', 'dev@invoiceapp.test')],
             [
                 'name'     => 'Dev User',
                 'locale'   => 'fr',
