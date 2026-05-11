@@ -14,7 +14,11 @@
       "Bash(git commit -m 'docs: add step-01 setup documentation *)",
       "Bash(./vendor/bin/sail artisan *)",
       "Bash(git commit -m 'docs: add step-02 auth documentation *)",
-      "Bash(./vendor/bin/sail npm *)"
+      "Bash(./vendor/bin/sail npm *)",
+      "Bash(git commit -m 'docs: add step-03 company documentation *)",
+      "Bash(git commit *)",
+      "Bash(chmod -R 755 /Users/ihorshtohryn/Documents/web2026/invoiceApp/storage/fonts)",
+      "Bash(./vendor/bin/sail exec *)"
     ]
   },
   "outputStyle": "default"
