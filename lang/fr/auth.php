@@ -7,4 +7,16 @@ return [
     'otp_expired' => 'Le code OTP a expiré. Veuillez vous reconnecter.',
     'otp_invalid' => 'Code OTP invalide. Veuillez réessayer.',
     'otp_blocked' => 'Trop de tentatives incorrectes. Compte bloqué 15 minutes.',
+
+    'login' => [
+        'password' => 'Mot de passe',
+        'submit'   => 'Connexion',
+    ],
+
+    'otp' => [
+        'subtitle'    => 'Code envoyé par email',
+        'code_label'  => 'Code OTP (6 chiffres)',
+        'submit'      => 'Vérifier',
+        'back'        => '← Retour',
+    ],
 ];
