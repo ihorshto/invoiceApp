@@ -35,9 +35,11 @@ return [
         'footer'      => 'Нижній колонтитул',
         'subtotal'    => 'Підсумок без ПДВ',
         'vat'         => 'ПДВ',
+        'product'     => 'Товар',
         'description' => 'Опис',
         'unit_price'  => 'Ціна',
-        'quantity'    => 'Кількість',
+        'quantity'    => 'К-сть',
+        'vat_rate'    => 'ПДВ %',
         'line_total'  => 'Сума',
     ],
 

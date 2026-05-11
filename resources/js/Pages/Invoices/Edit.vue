@@ -88,6 +88,15 @@ const submit = () => {
 
                 <div class="bg-white rounded-xl shadow p-6">
                     <h3 class="font-semibold text-gray-700 mb-4">{{ t('invoices.fields.items') }}</h3>
+                    <div class="grid grid-cols-12 gap-2 mb-1 text-xs font-semibold text-gray-400 uppercase tracking-wide">
+                        <div class="col-span-3">{{ t('invoices.fields.product') }}</div>
+                        <div class="col-span-3">{{ t('invoices.fields.description') }}</div>
+                        <div class="col-span-2">{{ t('invoices.fields.unit_price') }}</div>
+                        <div class="col-span-1">{{ t('invoices.fields.quantity') }}</div>
+                        <div class="col-span-1">{{ t('invoices.fields.vat_rate') }}</div>
+                        <div class="col-span-1 text-right">{{ t('invoices.fields.line_total') }}</div>
+                        <div class="col-span-1"></div>
+                    </div>
                     <div v-for="(item, index) in items" :key="index" class="grid grid-cols-12 gap-2 mb-3 items-start">
                         <div class="col-span-3">
                             <select v-model="item.product_id" @change="onProductChange(index)"

@@ -35,9 +35,11 @@ return [
         'footer'      => 'Pied de page',
         'subtotal'    => 'Sous-total HT',
         'vat'         => 'TVA',
+        'product'     => 'Produit',
         'description' => 'Description',
         'unit_price'  => 'Prix U.',
         'quantity'    => 'Qté',
+        'vat_rate'    => 'TVA %',
         'line_total'  => 'Total HT',
     ],
 
