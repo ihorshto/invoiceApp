@@ -4,6 +4,9 @@ import InputError from '@/Components/InputError.vue'
 import InputLabel from '@/Components/InputLabel.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 import TextInput from '@/Components/TextInput.vue'
+import { useI18n } from '@/Composables/useI18n'
+
+const { t } = useI18n()
 
 const form = useForm({
     code: '',
@@ -18,13 +21,11 @@ const submit = () => {
     <div class="min-h-screen flex items-center justify-center bg-gray-50">
         <div class="w-full max-w-md bg-white rounded-xl shadow-md p-8">
             <h1 class="text-2xl font-bold text-blue-800 mb-2 text-center">InvoiceApp</h1>
-            <p class="text-center text-gray-500 mb-6 text-sm">
-                Code envoyé par email / Код надіслано на email
-            </p>
+            <p class="text-center text-gray-500 mb-6 text-sm">{{ t('auth.otp.subtitle') }}</p>
 
             <form @submit.prevent="submit" class="space-y-5">
                 <div>
-                    <InputLabel for="code" value="Code OTP (6 chiffres)" />
+                    <InputLabel for="code" :value="t('auth.otp.code_label')" />
                     <TextInput
                         id="code"
                         v-model="form.code"
@@ -39,13 +40,11 @@ const submit = () => {
                 </div>
 
                 <PrimaryButton class="w-full justify-center" :disabled="form.processing">
-                    {{ form.processing ? '...' : 'Vérifier / Підтвердити' }}
+                    {{ form.processing ? '...' : t('auth.otp.submit') }}
                 </PrimaryButton>
 
                 <p class="text-center text-sm text-gray-500">
-                    <a :href="route('login')" class="text-blue-600 hover:underline">
-                        ← Retour / Назад
-                    </a>
+                    <a :href="route('login')" class="text-blue-600 hover:underline">{{ t('auth.otp.back') }}</a>
                 </p>
             </form>
         </div>

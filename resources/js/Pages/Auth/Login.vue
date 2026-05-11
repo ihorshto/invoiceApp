@@ -4,6 +4,9 @@ import InputError from '@/Components/InputError.vue'
 import InputLabel from '@/Components/InputLabel.vue'
 import PrimaryButton from '@/Components/PrimaryButton.vue'
 import TextInput from '@/Components/TextInput.vue'
+import { useI18n } from '@/Composables/useI18n'
+
+const { t } = useI18n()
 
 const form = useForm({
     email: '',
@@ -25,33 +28,18 @@ const submit = () => {
             <form @submit.prevent="submit" class="space-y-5">
                 <div>
                     <InputLabel for="email" value="Email" />
-                    <TextInput
-                        id="email"
-                        v-model="form.email"
-                        type="email"
-                        class="mt-1 block w-full"
-                        autocomplete="username"
-                        autofocus
-                        required
-                    />
+                    <TextInput id="email" v-model="form.email" type="email" class="mt-1 block w-full" autocomplete="username" autofocus required />
                     <InputError class="mt-2" :message="form.errors.email" />
                 </div>
 
                 <div>
-                    <InputLabel for="password" value="Mot de passe / Пароль" />
-                    <TextInput
-                        id="password"
-                        v-model="form.password"
-                        type="password"
-                        class="mt-1 block w-full"
-                        autocomplete="current-password"
-                        required
-                    />
+                    <InputLabel for="password" :value="t('auth.login.password')" />
+                    <TextInput id="password" v-model="form.password" type="password" class="mt-1 block w-full" autocomplete="current-password" required />
                     <InputError class="mt-2" :message="form.errors.password" />
                 </div>
 
                 <PrimaryButton class="w-full justify-center" :disabled="form.processing">
-                    {{ form.processing ? '...' : 'Connexion / Увійти' }}
+                    {{ form.processing ? '...' : t('auth.login.submit') }}
                 </PrimaryButton>
             </form>
         </div>
