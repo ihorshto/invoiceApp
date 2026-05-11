@@ -17,10 +17,8 @@ const statusCls = {
 
 const fmt     = (v) => formatMoney(v, props.invoice.currency ?? 'EUR')
 
-const markPaid = () => {
-    if (confirm(t('invoices.confirm_paid'))) {
-        router.post(route('invoices.mark-paid', props.invoice.id))
-    }
+const changeStatus = (newStatus) => {
+    router.patch(route('invoices.status', props.invoice.id), { status: newStatus })
 }
 
 const downloadPdf = () => {
@@ -35,9 +33,16 @@ const downloadPdf = () => {
                 <div class="flex items-center gap-4">
                     <Link :href="route('invoices.index')" class="text-gray-500 hover:text-gray-700">←</Link>
                     <h2 class="text-xl font-semibold text-gray-800">{{ t('invoices.title') }} {{ invoice.number }}</h2>
-                    <span :class="statusCls[invoice.status]" class="px-2 py-0.5 rounded-full text-xs font-medium">
-                        {{ t('invoices.statuses.' + invoice.status) }}
-                    </span>
+                    <select
+                        :value="invoice.status"
+                        @change="changeStatus($event.target.value)"
+                        :class="statusCls[invoice.status]"
+                        class="px-2 py-0.5 rounded-full text-xs font-medium border-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                        <option v-for="s in ['draft', 'sent', 'paid', 'overdue', 'cancelled']" :key="s" :value="s">
+                            {{ t('invoices.statuses.' + s) }}
+                        </option>
+                    </select>
                 </div>
                 <div class="flex gap-2">
                     <button @click="downloadPdf" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-sm">↓ PDF</button>
@@ -45,10 +50,6 @@ const downloadPdf = () => {
                         class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-sm">
                         {{ t('ui.action.edit') }}
                     </Link>
-                    <button v-if="['sent','overdue'].includes(invoice.status)" @click="markPaid"
-                        class="bg-green-600 hover:bg-green-700 text-white px-3 py-1.5 rounded-lg text-sm">
-                        {{ t('invoices.action.mark_paid') }}
-                    </button>
                 </div>
             </div>
         </template>
