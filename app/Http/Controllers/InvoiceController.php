@@ -111,6 +111,25 @@ class InvoiceController extends Controller
         return redirect()->route('invoices.show', $invoice);
     }
 
+    public function updateStatus(Request $request, Invoice $invoice): RedirectResponse
+    {
+        $data = $request->validate([
+            'status' => ['required', 'in:draft,sent,paid,overdue,cancelled'],
+        ]);
+
+        $updates = ['status' => $data['status']];
+
+        if ($data['status'] === 'paid') {
+            $updates['paid_at'] = now();
+        } elseif ($invoice->status === 'paid') {
+            $updates['paid_at'] = null;
+        }
+
+        $invoice->update($updates);
+
+        return redirect()->route('invoices.show', $invoice);
+    }
+
     public function pdf(Invoice $invoice, GeneratePdfAction $action): \Illuminate\Http\Response
     {
         return $action->stream($invoice);
