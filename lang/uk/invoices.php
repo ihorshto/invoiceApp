@@ -44,9 +44,10 @@ return [
     ],
 
     'action' => [
-        'add_line'    => '+ Додати рядок',
-        'mark_paid'   => 'Оплачено',
-        'view'        => 'Огляд',
+        'add_line'       => '+ Додати рядок',
+        'mark_paid'      => 'Оплачено',
+        'change_status'  => 'Змінити статус',
+        'view'           => 'Огляд',
     ],
 
     'select_client'  => '— Обрати —',

@@ -44,9 +44,10 @@ return [
     ],
 
     'action' => [
-        'add_line'    => '+ Ajouter ligne',
-        'mark_paid'   => 'Marquer payée',
-        'view'        => 'Voir',
+        'add_line'       => '+ Ajouter ligne',
+        'mark_paid'      => 'Marquer payée',
+        'change_status'  => 'Changer le statut',
+        'view'           => 'Voir',
     ],
 
     'select_client'  => '— Sélectionner —',
