@@ -29,7 +29,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('clients', ClientController::class)->except(['show']);
         Route::resource('products', ProductController::class)->except(['show']);
         Route::resource('invoices', InvoiceController::class);
-        Route::post('invoices/{invoice}/mark-paid', [InvoiceController::class, 'markPaid'])->name('invoices.mark-paid');
         Route::patch('invoices/{invoice}/status', [InvoiceController::class, 'updateStatus'])->name('invoices.status');
         Route::get('invoices/{invoice}/pdf', [InvoiceController::class, 'pdf'])->name('invoices.pdf');
     });

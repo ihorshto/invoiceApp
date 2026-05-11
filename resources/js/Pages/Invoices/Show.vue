@@ -37,6 +37,7 @@ const downloadPdf = () => {
                         :value="invoice.status"
                         @change="changeStatus($event.target.value)"
                         :class="statusCls[invoice.status]"
+                        :aria-label="t('invoices.action.change_status')"
                         class="px-2 py-0.5 rounded-full text-xs font-medium border-0 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
                     >
                         <option v-for="s in ['draft', 'sent', 'paid', 'overdue', 'cancelled']" :key="s" :value="s">
