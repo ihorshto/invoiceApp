@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Modules\Auth\Actions\GenerateOtpAction;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -21,6 +22,8 @@ class LoginController extends Controller
 
     public function store(OtpLoginRequest $request, GenerateOtpAction $action): RedirectResponse
     {
+        Log::info('Login attempt', ['email' => $request->email, 'ip' => $request->ip()]);
+
         $user = User::where('email', $request->email)->first();
 
         if (! $user || ! Hash::check($request->password, $user->password)) {
