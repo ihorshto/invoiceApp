@@ -22,9 +22,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::middleware(\App\Http\Middleware\EnsureUserHasCompany::class)->group(function () {
-        Route::get('/dashboard', function () {
-            return Inertia::render('Dashboard');
-        })->name('dashboard');
+        Route::get('/dashboard', \App\Http\Controllers\DashboardController::class)->name('dashboard');
 
         Route::resource('clients', ClientController::class)->except(['show']);
         Route::resource('products', ProductController::class)->except(['show']);

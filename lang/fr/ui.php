@@ -21,8 +21,16 @@ return [
         'cancel' => 'Annuler',
     ],
     'dashboard' => [
-        'title'   => 'Tableau de bord',
-        'welcome' => 'Bienvenue dans votre espace de facturation.',
+        'title'    => 'Tableau de bord',
+        'welcome'  => 'Bienvenue dans votre espace de facturation.',
+        'subtitle' => 'Aperçu financier',
+        'stats'    => [
+            'total'    => 'Total facturé',
+            'paid'     => 'Payé',
+            'pending'  => 'En attente',
+            'overdue'  => 'En retard',
+            'invoices' => 'factures',
+        ],
     ],
     'common' => [
         'search'     => 'Rechercher…',
