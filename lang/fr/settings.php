@@ -6,6 +6,10 @@ return [
 
     'title' => 'Paramètres société',
 
+    'company' => [
+        'title' => 'Paramètres de l\'entreprise',
+    ],
+
     'fields' => [
         'name'         => 'Nom de la société',
         'address'      => 'Adresse',

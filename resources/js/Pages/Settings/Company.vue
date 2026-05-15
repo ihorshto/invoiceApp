@@ -56,21 +56,23 @@ const submit = () => {
 <template>
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="text-xl font-semibold text-gray-800">{{ t('settings.title') }}</h2>
+            <div>
+                <h1 class="text-lg font-bold text-mint-900">{{ t('settings.company.title') }}</h1>
+            </div>
         </template>
 
-        <div class="py-8 max-w-3xl mx-auto px-4">
-            <form @submit.prevent="submit" class="bg-white rounded-xl shadow p-8 space-y-6">
+        <div class="p-6 max-w-2xl">
+            <form @submit.prevent="submit" class="space-y-6">
 
                 <div>
                     <InputLabel value="Logo" />
                     <div class="mt-2 flex items-center gap-4">
                         <img v-if="logoPreview" :src="logoPreview" class="h-20 w-auto rounded border object-contain" alt="Logo" />
-                        <div v-else class="h-20 w-32 bg-gray-100 rounded border flex items-center justify-center text-gray-400 text-sm">
+                        <div v-else class="h-20 w-32 bg-slate-50 rounded-md border border-slate-200 flex items-center justify-center text-slate-400 text-sm">
                             {{ t('settings.logo.no_logo') }}
                         </div>
                         <div class="flex gap-2">
-                            <button type="button" class="text-sm text-blue-600 hover:underline" @click="fileInput.click()">
+                            <button type="button" class="text-sm text-mint-600 hover:text-mint-800 hover:underline" @click="fileInput.click()">
                                 {{ t('settings.logo.choose') }}
                             </button>
                             <button v-if="logoPreview" type="button" class="text-sm text-red-500 hover:underline" @click="removeLogo">
@@ -91,7 +93,7 @@ const submit = () => {
                 <div>
                     <InputLabel for="address" :value="t('settings.fields.address') + ' *'" />
                     <textarea id="address" v-model="form.address" rows="2" required
-                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                        class="mt-1 block w-full rounded-md border border-slate-200 bg-slate-50 shadow-none focus:border-mint-400 focus:ring-mint-400" />
                     <InputError class="mt-1" :message="form.errors.address" />
                 </div>
 
@@ -143,7 +145,7 @@ const submit = () => {
                 <div>
                     <InputLabel for="legal_footer" :value="t('settings.fields.legal_footer')" />
                     <textarea id="legal_footer" v-model="form.legal_footer" rows="3"
-                        class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500" />
+                        class="mt-1 block w-full rounded-md border border-slate-200 bg-slate-50 shadow-none focus:border-mint-400 focus:ring-mint-400" />
                     <InputError class="mt-1" :message="form.errors.legal_footer" />
                 </div>
 
