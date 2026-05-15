@@ -7,6 +7,7 @@ return [
     'cannot_delete_with_invoices' => 'Impossible de supprimer un client avec des factures.',
 
     'title'          => 'Clients',
+    'count'          => 'clients',
     'new'            => 'Nouveau client',
     'edit'           => 'Modifier client',
     'search'         => 'Rechercher par nom ou email…',

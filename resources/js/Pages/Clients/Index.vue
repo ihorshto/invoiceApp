@@ -30,57 +30,68 @@ const deleteClient = (id) => {
 <template>
     <AuthenticatedLayout>
         <template #header>
-            <div class="flex items-center justify-between">
-                <h2 class="text-xl font-semibold text-gray-800">{{ t('clients.title') }}</h2>
-                <Link :href="route('clients.create')" class="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-800">
-                    + {{ t('ui.action.new') }}
-                </Link>
+            <div>
+                <h1 class="text-lg font-bold text-mint-900">{{ t('clients.title') }}</h1>
+                <p class="text-xs text-slate-500 mt-0.5">{{ clients.total }} {{ t('clients.count') }}</p>
             </div>
+            <Link
+                :href="route('clients.create')"
+                class="inline-flex items-center rounded-md bg-mint-500 px-4 py-2 text-sm font-semibold text-white hover:bg-mint-600 transition-colors"
+            >
+                + {{ t('ui.action.new') }}
+            </Link>
         </template>
 
-        <div class="py-8 max-w-6xl mx-auto px-4">
+        <div class="p-6">
             <div class="mb-4">
-                <input v-model="search" type="text" :placeholder="t('clients.search')"
-                    class="w-full max-w-sm border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm" />
+                <input
+                    v-model="search"
+                    type="text"
+                    :placeholder="t('clients.search')"
+                    class="w-full rounded-md border border-slate-200 bg-slate-50 text-sm focus:border-mint-400 focus:ring-mint-400"
+                />
             </div>
 
-            <div class="bg-white rounded-xl shadow overflow-hidden">
-                <table class="min-w-full divide-y divide-gray-200 text-sm">
-                    <thead class="bg-gray-50">
+            <div class="overflow-hidden rounded-lg border border-slate-200">
+                <table class="min-w-full divide-y divide-slate-100 text-sm">
+                    <thead class="bg-slate-50">
                         <tr>
-                            <th class="px-4 py-3 text-left font-medium text-gray-500">{{ t('clients.fields.name') }}</th>
-                            <th class="px-4 py-3 text-left font-medium text-gray-500">{{ t('clients.fields.email') }}</th>
-                            <th class="px-4 py-3 text-left font-medium text-gray-500">{{ t('clients.fields.city') }}</th>
-                            <th class="px-4 py-3 text-left font-medium text-gray-500">{{ t('clients.fields.country') }}</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t('clients.fields.name') }}</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t('clients.fields.email') }}</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t('clients.fields.city') }}</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t('clients.fields.country') }}</th>
                             <th class="px-4 py-3"></th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr v-for="client in clients.data" :key="client.id" class="hover:bg-gray-50">
-                            <td class="px-4 py-3 font-medium text-gray-900">{{ client.name }}</td>
-                            <td class="px-4 py-3 text-gray-600">{{ client.email }}</td>
-                            <td class="px-4 py-3 text-gray-600">{{ client.city }}</td>
-                            <td class="px-4 py-3 text-gray-600">{{ client.country }}</td>
-                            <td class="px-4 py-3 text-right space-x-2">
-                                <Link :href="route('clients.edit', client.id)" class="text-blue-600 hover:underline">
-                                    {{ t('ui.action.edit') }}
-                                </Link>
-                                <button class="text-red-500 hover:underline" @click="deleteClient(client.id)">
-                                    {{ t('ui.action.delete') }}
-                                </button>
+                    <tbody class="divide-y divide-slate-100 bg-white">
+                        <tr v-for="client in clients.data" :key="client.id" class="hover:bg-mint-50 transition-colors">
+                            <td class="px-4 py-3 font-medium text-mint-900">{{ client.name }}</td>
+                            <td class="px-4 py-3 text-slate-500">{{ client.email }}</td>
+                            <td class="px-4 py-3 text-slate-500">{{ client.city }}</td>
+                            <td class="px-4 py-3 text-slate-500">{{ client.country }}</td>
+                            <td class="px-4 py-3 text-right space-x-3">
+                                <Link :href="route('clients.edit', client.id)" class="text-mint-600 hover:text-mint-800 text-xs font-medium hover:underline">{{ t('ui.action.edit') }}</Link>
+                                <button class="text-red-400 hover:text-red-600 text-xs font-medium hover:underline" @click="deleteClient(client.id)">{{ t('ui.action.delete') }}</button>
                             </td>
                         </tr>
                         <tr v-if="!clients.data?.length">
-                            <td colspan="5" class="px-4 py-8 text-center text-gray-400">{{ t('clients.empty') }}</td>
+                            <td colspan="5" class="px-4 py-10 text-center text-sm text-slate-400">{{ t('clients.empty') }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div v-if="clients.last_page > 1" class="mt-4 flex justify-center gap-2 text-sm">
-                <Link v-for="link in clients.links" :key="link.label" :href="link.url ?? '#'"
-                    :class="['px-3 py-1 rounded border', link.active ? 'bg-blue-700 text-white border-blue-700' : 'border-gray-300 hover:bg-gray-50']"
-                    v-html="link.label" />
+            <div v-if="clients.last_page > 1" class="mt-4 flex justify-center gap-1.5 text-sm">
+                <Link
+                    v-for="link in clients.links"
+                    :key="link.label"
+                    :href="link.url ?? '#'"
+                    class="rounded-md border px-3 py-1.5 text-xs font-medium transition-colors"
+                    :class="link.active
+                        ? 'bg-mint-500 text-white border-mint-500'
+                        : 'border-slate-200 text-slate-600 hover:bg-mint-50'"
+                    v-html="link.label"
+                />
             </div>
         </div>
     </AuthenticatedLayout>
