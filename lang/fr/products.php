@@ -2,6 +2,7 @@
 
 return [
     'title'          => 'Produits',
+    'count'          => 'produits',
     'new'            => 'Nouveau produit',
     'edit'           => 'Modifier produit',
     'search'         => 'Rechercher par nom…',

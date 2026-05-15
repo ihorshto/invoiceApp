@@ -30,64 +30,79 @@ const deleteProduct = (id) => {
 <template>
     <AuthenticatedLayout>
         <template #header>
-            <div class="flex items-center justify-between">
-                <h2 class="text-xl font-semibold text-gray-800">{{ t('products.title') }}</h2>
-                <Link :href="route('products.create')" class="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-800">
-                    + {{ t('ui.action.new') }}
-                </Link>
+            <div>
+                <h1 class="text-lg font-bold text-mint-900">{{ t('products.title') }}</h1>
+                <p class="text-xs text-slate-500 mt-0.5">{{ products.total }} {{ t('products.count') }}</p>
             </div>
+            <Link
+                :href="route('products.create')"
+                class="inline-flex items-center rounded-md bg-mint-500 px-4 py-2 text-sm font-semibold text-white hover:bg-mint-600 transition-colors"
+            >
+                + {{ t('ui.action.new') }}
+            </Link>
         </template>
 
-        <div class="py-8 max-w-6xl mx-auto px-4">
+        <div class="p-6">
             <div class="mb-4">
-                <input v-model="search" type="text" :placeholder="t('products.search')"
-                    class="w-full max-w-sm border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm" />
+                <input
+                    v-model="search"
+                    type="text"
+                    :placeholder="t('products.search')"
+                    class="w-full rounded-md border border-slate-200 bg-slate-50 text-sm focus:border-mint-400 focus:ring-mint-400"
+                />
             </div>
 
-            <div class="bg-white rounded-xl shadow overflow-hidden">
-                <table class="min-w-full divide-y divide-gray-200 text-sm">
-                    <thead class="bg-gray-50">
+            <div class="overflow-hidden rounded-lg border border-slate-200">
+                <table class="min-w-full divide-y divide-slate-100 text-sm">
+                    <thead class="bg-slate-50">
                         <tr>
-                            <th class="px-4 py-3 text-left font-medium text-gray-500">{{ t('products.fields.name') }}</th>
-                            <th class="px-4 py-3 text-left font-medium text-gray-500">{{ t('products.fields.price') }}</th>
-                            <th class="px-4 py-3 text-left font-medium text-gray-500">{{ t('products.fields.vat_rate') }}</th>
-                            <th class="px-4 py-3 text-left font-medium text-gray-500">{{ t('products.fields.unit') }}</th>
-                            <th class="px-4 py-3 text-left font-medium text-gray-500">{{ t('products.fields.active') }}</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t('products.fields.name') }}</th>
+                            <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t('products.fields.price') }}</th>
+                            <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t('products.fields.vat_rate') }}</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t('products.fields.unit') }}</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t('products.fields.active') }}</th>
                             <th class="px-4 py-3"></th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr v-for="product in products.data" :key="product.id" class="hover:bg-gray-50" :class="{ 'opacity-50': !product.is_active }">
-                            <td class="px-4 py-3 font-medium text-gray-900">{{ product.name }}</td>
-                            <td class="px-4 py-3 text-gray-600">{{ formatMoney(product.unit_price) }}</td>
-                            <td class="px-4 py-3 text-gray-600">{{ product.vat_rate }}%</td>
-                            <td class="px-4 py-3 text-gray-600">{{ product.unit }}</td>
+                    <tbody class="divide-y divide-slate-100 bg-white">
+                        <tr v-for="product in products.data" :key="product.id" class="hover:bg-mint-50 transition-colors" :class="{ 'opacity-50': !product.is_active }">
+                            <td class="px-4 py-3 font-medium text-mint-900">{{ product.name }}</td>
+                            <td class="px-4 py-3 text-right font-semibold text-mint-900">{{ formatMoney(product.unit_price) }}</td>
+                            <td class="px-4 py-3 text-right text-slate-500">{{ product.vat_rate }}%</td>
+                            <td class="px-4 py-3 text-slate-500">{{ product.unit }}</td>
                             <td class="px-4 py-3">
-                                <span :class="product.is_active ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-600'"
-                                    class="px-2 py-0.5 rounded-full text-xs font-medium">
+                                <span
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-semibold border"
+                                    :class="product.is_active
+                                        ? 'bg-green-100 text-green-700 border-green-200'
+                                        : 'bg-slate-100 text-slate-500 border-slate-200'"
+                                >
                                     {{ product.is_active ? t('products.status.active') : t('products.status.archived') }}
                                 </span>
                             </td>
-                            <td class="px-4 py-3 text-right space-x-2">
-                                <Link :href="route('products.edit', product.id)" class="text-blue-600 hover:underline">
-                                    {{ t('ui.action.edit') }}
-                                </Link>
-                                <button class="text-red-500 hover:underline" @click="deleteProduct(product.id)">
-                                    {{ t('ui.action.delete') }}
-                                </button>
+                            <td class="px-4 py-3 text-right space-x-3">
+                                <Link :href="route('products.edit', product.id)" class="text-mint-600 hover:text-mint-800 text-xs font-medium hover:underline">{{ t('ui.action.edit') }}</Link>
+                                <button class="text-red-400 hover:text-red-600 text-xs font-medium hover:underline" @click="deleteProduct(product.id)">{{ t('ui.action.delete') }}</button>
                             </td>
                         </tr>
                         <tr v-if="!products.data?.length">
-                            <td colspan="6" class="px-4 py-8 text-center text-gray-400">{{ t('products.empty') }}</td>
+                            <td colspan="6" class="px-4 py-10 text-center text-sm text-slate-400">{{ t('products.empty') }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div v-if="products.last_page > 1" class="mt-4 flex justify-center gap-2 text-sm">
-                <Link v-for="link in products.links" :key="link.label" :href="link.url ?? '#'"
-                    :class="['px-3 py-1 rounded border', link.active ? 'bg-blue-700 text-white border-blue-700' : 'border-gray-300 hover:bg-gray-50']"
-                    v-html="link.label" />
+            <div v-if="products.last_page > 1" class="mt-4 flex justify-center gap-1.5">
+                <Link
+                    v-for="link in products.links"
+                    :key="link.label"
+                    :href="link.url ?? '#'"
+                    class="rounded-md border px-3 py-1.5 text-xs font-medium transition-colors"
+                    :class="link.active
+                        ? 'bg-mint-500 text-white border-mint-500'
+                        : 'border-slate-200 text-slate-600 hover:bg-mint-50'"
+                    v-html="link.label"
+                />
             </div>
         </div>
     </AuthenticatedLayout>
