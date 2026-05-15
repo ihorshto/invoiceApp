@@ -117,11 +117,11 @@ const navItems = [
                 </nav>
                 <div class="border-t border-mint-100 px-2 py-3">
                     <div class="flex items-center gap-2 px-2.5 py-1">
-                        <button @click="switchLocale('fr')" class="text-xs font-semibold" :class="locale === 'fr' ? 'text-mint-600' : 'text-slate-400'" aria-label="Switch to French">FR</button>
+                        <button @click="switchLocale('fr')" class="text-xs font-semibold" :class="locale === 'fr' ? 'text-mint-600' : 'text-slate-400 hover:text-slate-600'" aria-label="Switch to French">FR</button>
                         <span class="text-slate-300 text-xs">|</span>
-                        <button @click="switchLocale('uk')" class="text-xs font-semibold" :class="locale === 'uk' ? 'text-mint-600' : 'text-slate-400'" aria-label="Switch to Ukrainian">UK</button>
+                        <button @click="switchLocale('uk')" class="text-xs font-semibold" :class="locale === 'uk' ? 'text-mint-600' : 'text-slate-400 hover:text-slate-600'" aria-label="Switch to Ukrainian">UK</button>
                     </div>
-                    <Link :href="route('logout')" method="post" as="button" class="w-full text-left px-2.5 py-1.5 text-xs text-slate-500 hover:text-red-500">
+                    <Link :href="route('logout')" method="post" as="button" class="w-full text-left px-2.5 py-1.5 text-xs text-slate-500 hover:text-red-500 rounded-md hover:bg-red-50 transition-colors">
                         {{ t('ui.nav.logout') }}
                     </Link>
                 </div>
