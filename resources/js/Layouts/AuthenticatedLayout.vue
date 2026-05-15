@@ -43,7 +43,7 @@ const navItems = [
                         ? 'bg-mint-500 text-white font-semibold'
                         : 'text-mint-600 hover:bg-mint-100'"
                 >
-                    <span class="w-[18px] text-center text-[15px]">{{ item.icon }}</span>
+                    <span class="w-[18px] text-center text-[15px]" aria-hidden="true">{{ item.icon }}</span>
                     {{ t(item.label) }}
                 </Link>
             </nav>
@@ -52,14 +52,14 @@ const navItems = [
             <div class="border-t border-mint-100 px-2 py-3 space-y-1">
                 <!-- Language switcher -->
                 <div class="flex items-center gap-2 px-2.5 py-1">
-                    <button @click="switchLocale('fr')" class="text-xs font-semibold" :class="locale === 'fr' ? 'text-mint-600' : 'text-slate-400 hover:text-slate-600'">FR</button>
+                    <button @click="switchLocale('fr')" class="text-xs font-semibold" :class="locale === 'fr' ? 'text-mint-600' : 'text-slate-400 hover:text-slate-600'" aria-label="Switch to French">FR</button>
                     <span class="text-slate-300 text-xs">|</span>
-                    <button @click="switchLocale('uk')" class="text-xs font-semibold" :class="locale === 'uk' ? 'text-mint-600' : 'text-slate-400 hover:text-slate-600'">UK</button>
+                    <button @click="switchLocale('uk')" class="text-xs font-semibold" :class="locale === 'uk' ? 'text-mint-600' : 'text-slate-400 hover:text-slate-600'" aria-label="Switch to Ukrainian">UK</button>
                 </div>
                 <!-- User chip -->
                 <div class="flex items-center gap-2 rounded-md px-2.5 py-2">
                     <div class="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-mint-500 text-[11px] font-bold text-white">
-                        {{ $page.props.auth.user.name.slice(0,2).toUpperCase() }}
+                        {{ ($page.props.auth.user.name ?? '').slice(0,2).toUpperCase() }}
                     </div>
                     <div class="min-w-0">
                         <p class="truncate text-xs font-semibold text-mint-900">{{ $page.props.auth.user.name }}</p>
@@ -82,7 +82,7 @@ const navItems = [
             leave-from-class="opacity-100"
             leave-to-class="opacity-0"
         >
-            <div v-if="drawerOpen" class="fixed inset-0 z-40 bg-black/30 lg:hidden" @click="drawerOpen = false" />
+            <div v-if="drawerOpen" class="fixed inset-0 z-40 bg-black/30 lg:hidden" @click="drawerOpen = false" @keydown.esc="drawerOpen = false" tabindex="-1" role="presentation" />
         </Transition>
 
         <!-- MOBILE DRAWER PANEL -->
@@ -94,11 +94,11 @@ const navItems = [
             leave-from-class="translate-x-0"
             leave-to-class="-translate-x-full"
         >
-            <aside v-if="drawerOpen" class="fixed inset-y-0 left-0 z-50 flex w-[220px] flex-col border-r border-mint-100 bg-mint-50 lg:hidden">
+            <aside v-if="drawerOpen" class="fixed inset-y-0 left-0 z-50 flex w-[220px] flex-col border-r border-mint-100 bg-mint-50 lg:hidden" @keydown.esc="drawerOpen = false">
                 <div class="flex items-center gap-2 border-b border-mint-100 px-4 py-[18px]">
                     <div class="flex h-7 w-7 items-center justify-center rounded-md bg-mint-500 text-xs font-bold text-white">I</div>
                     <span class="text-[13px] font-bold text-mint-900">InvoiceApp</span>
-                    <button class="ml-auto text-slate-400 hover:text-slate-600" @click="drawerOpen = false">✕</button>
+                    <button class="ml-auto text-slate-400 hover:text-slate-600" @click="drawerOpen = false" autofocus aria-label="Close navigation menu">✕</button>
                 </div>
                 <nav class="flex-1 px-2 py-3">
                     <Link
@@ -111,15 +111,15 @@ const navItems = [
                             : 'text-mint-600 hover:bg-mint-100'"
                         @click="drawerOpen = false"
                     >
-                        <span class="w-[18px] text-center text-[15px]">{{ item.icon }}</span>
+                        <span class="w-[18px] text-center text-[15px]" aria-hidden="true">{{ item.icon }}</span>
                         {{ t(item.label) }}
                     </Link>
                 </nav>
                 <div class="border-t border-mint-100 px-2 py-3">
                     <div class="flex items-center gap-2 px-2.5 py-1">
-                        <button @click="switchLocale('fr')" class="text-xs font-semibold" :class="locale === 'fr' ? 'text-mint-600' : 'text-slate-400'">FR</button>
+                        <button @click="switchLocale('fr')" class="text-xs font-semibold" :class="locale === 'fr' ? 'text-mint-600' : 'text-slate-400'" aria-label="Switch to French">FR</button>
                         <span class="text-slate-300 text-xs">|</span>
-                        <button @click="switchLocale('uk')" class="text-xs font-semibold" :class="locale === 'uk' ? 'text-mint-600' : 'text-slate-400'">UK</button>
+                        <button @click="switchLocale('uk')" class="text-xs font-semibold" :class="locale === 'uk' ? 'text-mint-600' : 'text-slate-400'" aria-label="Switch to Ukrainian">UK</button>
                     </div>
                     <Link :href="route('logout')" method="post" as="button" class="w-full text-left px-2.5 py-1.5 text-xs text-slate-500 hover:text-red-500">
                         {{ t('ui.nav.logout') }}
@@ -132,14 +132,14 @@ const navItems = [
         <div class="flex flex-1 flex-col overflow-hidden">
             <!-- Mobile topbar -->
             <div class="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 lg:hidden">
-                <button @click="drawerOpen = true" class="flex flex-col gap-1 p-1">
-                    <span class="h-0.5 w-5 bg-mint-900 rounded"></span>
-                    <span class="h-0.5 w-5 bg-mint-900 rounded"></span>
-                    <span class="h-0.5 w-5 bg-mint-900 rounded"></span>
+                <button @click="drawerOpen = true" class="flex flex-col gap-1 p-1" :aria-expanded="drawerOpen" aria-label="Open navigation menu">
+                    <span class="h-0.5 w-5 bg-mint-900 rounded" aria-hidden="true"></span>
+                    <span class="h-0.5 w-5 bg-mint-900 rounded" aria-hidden="true"></span>
+                    <span class="h-0.5 w-5 bg-mint-900 rounded" aria-hidden="true"></span>
                 </button>
                 <span class="text-sm font-bold text-mint-900">InvoiceApp</span>
                 <div class="flex h-7 w-7 items-center justify-center rounded-full bg-mint-500 text-[11px] font-bold text-white">
-                    {{ $page.props.auth.user.name.slice(0,2).toUpperCase() }}
+                    {{ ($page.props.auth.user.name ?? '').slice(0,2).toUpperCase() }}
                 </div>
             </div>
 
