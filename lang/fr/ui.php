@@ -8,6 +8,7 @@ return [
         'invoices'  => 'Factures',
         'settings'  => 'Paramètres',
         'logout'    => 'Déconnexion',
+        'group'     => ['main' => 'Navigation'],
     ],
     'action' => [
         'save'   => 'Enregistrer',

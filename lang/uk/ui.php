@@ -8,6 +8,7 @@ return [
         'invoices'  => 'Рахунки',
         'settings'  => 'Налаштування',
         'logout'    => 'Вийти',
+        'group'     => ['main' => 'Навігація'],
     ],
     'action' => [
         'save'   => 'Зберегти',
