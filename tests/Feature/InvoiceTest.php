@@ -104,7 +104,7 @@ class InvoiceTest extends TestCase
         ]);
 
         $this->actingAs($user)
-            ->post(route('invoices.mark-paid', $invoice))
+            ->patch(route('invoices.status', $invoice), ['status' => 'paid'])
             ->assertRedirect();
 
         $this->assertEquals('paid', $invoice->fresh()->status);
