@@ -1,4 +1,3 @@
-<!-- resources/js/Pages/Dashboard.vue -->
 <script setup>
 import { computed } from 'vue'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
@@ -8,7 +7,7 @@ import { useI18n } from '@/Composables/useI18n'
 const { t, formatMoney } = useI18n()
 
 const props = defineProps({
-    stats: Object,
+    stats: { type: Object, required: true },
 })
 
 const paidPct    = computed(() => props.stats.total_count ? Math.round(props.stats.paid_count    / props.stats.total_count * 100) : 0)
