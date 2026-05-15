@@ -1,6 +1,7 @@
 <script setup>
 import { router, Link } from '@inertiajs/vue3'
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
+import StatusBadge from '@/Components/StatusBadge.vue'
 import { ref, watch } from 'vue'
 import { useDebounceFn } from '@vueuse/core'
 import { useI18n } from '@/Composables/useI18n'
@@ -8,8 +9,8 @@ import { useI18n } from '@/Composables/useI18n'
 const { t, formatMoney, formatDate } = useI18n()
 
 const props = defineProps({
-    invoices: Object,
-    filters: Object,
+    invoices: { type: Object, required: true },
+    filters:  Object,
 })
 
 const search = ref(props.filters?.search ?? '')
@@ -21,13 +22,13 @@ const doSearch = useDebounceFn(() => {
 
 watch([search, status], doSearch)
 
-const statusCls = {
-    draft:     'bg-gray-100 text-gray-700',
-    sent:      'bg-blue-100 text-blue-700',
-    paid:      'bg-green-100 text-green-700',
-    overdue:   'bg-red-100 text-red-700',
-    cancelled: 'bg-yellow-100 text-yellow-700',
-}
+const filterOptions = [
+    { value: '',        label: 'invoices.filter.all_statuses' },
+    { value: 'paid',    label: 'invoices.statuses.paid' },
+    { value: 'sent',    label: 'invoices.statuses.sent' },
+    { value: 'overdue', label: 'invoices.statuses.overdue' },
+    { value: 'draft',   label: 'invoices.statuses.draft' },
+]
 
 const deleteInvoice = (id) => {
     if (confirm(t('invoices.confirm_delete'))) {
@@ -39,70 +40,89 @@ const deleteInvoice = (id) => {
 <template>
     <AuthenticatedLayout>
         <template #header>
-            <div class="flex items-center justify-between">
-                <h2 class="text-xl font-semibold text-gray-800">{{ t('invoices.title') }}</h2>
-                <Link :href="route('invoices.create')" class="bg-blue-700 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-800">
-                    + {{ t('ui.action.new') }}
-                </Link>
+            <div>
+                <h1 class="text-lg font-bold text-mint-900">{{ t('invoices.title') }}</h1>
+                <p class="text-xs text-slate-500 mt-0.5">{{ invoices.total }} {{ t('invoices.count') }}</p>
             </div>
+            <Link
+                :href="route('invoices.create')"
+                class="inline-flex items-center rounded-md bg-mint-500 px-4 py-2 text-sm font-semibold text-white hover:bg-mint-600 transition-colors"
+            >
+                + {{ t('ui.action.new') }}
+            </Link>
         </template>
 
-        <div class="py-8 max-w-6xl mx-auto px-4">
-            <div class="mb-4 flex gap-3">
-                <input v-model="search" type="text" :placeholder="t('invoices.search')"
-                    class="border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm w-64" />
-                <select v-model="status" class="border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm">
-                    <option value="">{{ t('invoices.filter.all_statuses') }}</option>
-                    <option value="draft">{{ t('invoices.statuses.draft') }}</option>
-                    <option value="sent">{{ t('invoices.statuses.sent') }}</option>
-                    <option value="paid">{{ t('invoices.statuses.paid') }}</option>
-                    <option value="overdue">{{ t('invoices.statuses.overdue') }}</option>
-                    <option value="cancelled">{{ t('invoices.statuses.cancelled') }}</option>
-                </select>
+        <div class="p-6">
+            <!-- Toolbar: search flex-1 + filter buttons -->
+            <div class="mb-4 flex items-center gap-2">
+                <input
+                    v-model="search"
+                    type="text"
+                    :placeholder="t('invoices.search')"
+                    class="flex-1 min-w-0 rounded-md border border-slate-200 bg-slate-50 text-sm focus:border-mint-400 focus:ring-mint-400"
+                />
+                <button
+                    v-for="opt in filterOptions"
+                    :key="opt.value"
+                    @click="status = opt.value"
+                    class="flex-shrink-0 rounded-md border px-3 py-2 text-xs font-medium transition-colors"
+                    :class="status === opt.value
+                        ? 'border-mint-500 bg-mint-50 text-mint-700 font-semibold'
+                        : 'border-slate-200 bg-slate-50 text-slate-600 hover:border-mint-300 hover:bg-mint-50'"
+                >
+                    {{ t(opt.label) }}
+                </button>
             </div>
 
-            <div class="bg-white rounded-xl shadow overflow-hidden">
-                <table class="min-w-full divide-y divide-gray-200 text-sm">
-                    <thead class="bg-gray-50">
+            <!-- Table -->
+            <div class="overflow-hidden rounded-lg border border-slate-200">
+                <table class="min-w-full divide-y divide-slate-100 text-sm">
+                    <thead class="bg-slate-50">
                         <tr>
-                            <th class="px-4 py-3 text-left font-medium text-gray-500">{{ t('invoices.fields.number') }}</th>
-                            <th class="px-4 py-3 text-left font-medium text-gray-500">{{ t('invoices.fields.client') }}</th>
-                            <th class="px-4 py-3 text-left font-medium text-gray-500">{{ t('invoices.fields.date') }}</th>
-                            <th class="px-4 py-3 text-left font-medium text-gray-500">{{ t('invoices.fields.due_date') }}</th>
-                            <th class="px-4 py-3 text-right font-medium text-gray-500">{{ t('invoices.fields.total') }}</th>
-                            <th class="px-4 py-3 text-left font-medium text-gray-500">{{ t('invoices.fields.status') }}</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t('invoices.fields.number') }}</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t('invoices.fields.client') }}</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t('invoices.fields.date') }}</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t('invoices.fields.due_date') }}</th>
+                            <th class="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t('invoices.fields.total') }}</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">{{ t('invoices.fields.status') }}</th>
                             <th class="px-4 py-3"></th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-100">
-                        <tr v-for="inv in invoices.data" :key="inv.id" class="hover:bg-gray-50">
-                            <td class="px-4 py-3 font-mono font-medium text-gray-900">{{ inv.number }}</td>
-                            <td class="px-4 py-3 text-gray-700">{{ inv.client?.name }}</td>
-                            <td class="px-4 py-3 text-gray-600">{{ formatDate(inv.issue_date) }}</td>
-                            <td class="px-4 py-3 text-gray-600">{{ formatDate(inv.due_date) }}</td>
-                            <td class="px-4 py-3 text-right font-medium text-gray-900">{{ formatMoney(inv.total) }}</td>
+                    <tbody class="divide-y divide-slate-100 bg-white">
+                        <tr v-for="inv in invoices.data" :key="inv.id" class="hover:bg-mint-50 transition-colors">
+                            <td class="px-4 py-3 font-mono font-semibold text-mint-900">{{ inv.number }}</td>
+                            <td class="px-4 py-3 text-slate-700">{{ inv.client?.name }}</td>
+                            <td class="px-4 py-3 text-slate-500">{{ formatDate(inv.issue_date) }}</td>
+                            <td class="px-4 py-3 text-slate-500">{{ formatDate(inv.due_date) }}</td>
+                            <td class="px-4 py-3 text-right font-semibold text-mint-900">{{ formatMoney(inv.total) }}</td>
                             <td class="px-4 py-3">
-                                <span :class="statusCls[inv.status]" class="px-2 py-0.5 rounded-full text-xs font-medium">
-                                    {{ t('invoices.statuses.' + inv.status) }}
-                                </span>
+                                <StatusBadge :status="inv.status">{{ t('invoices.statuses.' + inv.status) }}</StatusBadge>
                             </td>
-                            <td class="px-4 py-3 text-right space-x-2">
-                                <Link :href="route('invoices.show', inv.id)" class="text-blue-600 hover:underline">{{ t('invoices.action.view') }}</Link>
-                                <Link v-if="['draft','sent'].includes(inv.status)" :href="route('invoices.edit', inv.id)" class="text-indigo-600 hover:underline">{{ t('ui.action.edit') }}</Link>
-                                <button v-if="inv.status === 'draft'" class="text-red-500 hover:underline" @click="deleteInvoice(inv.id)">{{ t('ui.action.delete') }}</button>
+                            <td class="px-4 py-3 text-right space-x-3">
+                                <Link :href="route('invoices.show', inv.id)" class="text-mint-600 hover:text-mint-800 text-xs font-medium hover:underline">{{ t('invoices.action.view') }}</Link>
+                                <Link v-if="['draft','sent'].includes(inv.status)" :href="route('invoices.edit', inv.id)" class="text-slate-500 hover:text-slate-700 text-xs font-medium hover:underline">{{ t('ui.action.edit') }}</Link>
+                                <button v-if="inv.status === 'draft'" class="text-red-400 hover:text-red-600 text-xs font-medium hover:underline" @click="deleteInvoice(inv.id)">{{ t('ui.action.delete') }}</button>
                             </td>
                         </tr>
                         <tr v-if="!invoices.data?.length">
-                            <td colspan="7" class="px-4 py-8 text-center text-gray-400">{{ t('invoices.empty') }}</td>
+                            <td colspan="7" class="px-4 py-10 text-center text-sm text-slate-400">{{ t('invoices.empty') }}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
 
-            <div v-if="invoices.last_page > 1" class="mt-4 flex justify-center gap-2 text-sm">
-                <Link v-for="link in invoices.links" :key="link.label" :href="link.url ?? '#'"
-                    :class="['px-3 py-1 rounded border', link.active ? 'bg-blue-700 text-white border-blue-700' : 'border-gray-300 hover:bg-gray-50']"
-                    v-html="link.label" />
+            <!-- Pagination -->
+            <div v-if="invoices.last_page > 1" class="mt-4 flex justify-center gap-1.5 text-sm">
+                <Link
+                    v-for="link in invoices.links"
+                    :key="link.label"
+                    :href="link.url ?? '#'"
+                    class="rounded-md border px-3 py-1.5 text-xs font-medium transition-colors"
+                    :class="link.active
+                        ? 'bg-mint-500 text-white border-mint-500'
+                        : 'border-slate-200 text-slate-600 hover:bg-mint-50 hover:border-mint-300'"
+                    v-html="link.label"
+                />
             </div>
         </div>
     </AuthenticatedLayout>

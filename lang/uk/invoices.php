@@ -8,6 +8,7 @@ return [
     'confirm_delete' => 'Видалити рахунок?',
     'confirm_paid'   => 'Позначити оплаченим?',
     'empty'          => 'Рахунків немає',
+    'count'          => 'документів',
 
     'statuses' => [
         'draft'     => 'Чернетка',

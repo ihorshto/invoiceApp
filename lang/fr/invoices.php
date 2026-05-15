@@ -8,6 +8,7 @@ return [
     'confirm_delete' => 'Supprimer cette facture ?',
     'confirm_paid'   => 'Marquer comme payée ?',
     'empty'          => 'Aucune facture',
+    'count'          => 'documents',
 
     'statuses' => [
         'draft'     => 'Brouillon',
