@@ -12,9 +12,12 @@ class GeneratePdfAction
     {
         $invoice->load('company', 'client', 'items');
 
-        $view = in_array($locale, ['fr', 'uk'], true)
-            ? "pdf.invoice-{$locale}"
-            : 'pdf.invoice-fr';
+        $view = match(true) {
+            $invoice->isDevis() && $locale === 'fr' => 'pdf.devis-fr',
+            $locale === 'fr'                         => 'pdf.invoice-fr',
+            $locale === 'uk'                         => 'pdf.invoice-uk',
+            default                                  => 'pdf.invoice-fr',
+        };
 
         $pdf = Pdf::loadView($view, [
             'invoice' => $invoice,
