@@ -42,7 +42,7 @@
 <body>
 <div class="page">
 
-    {{-- HEADER: DEVIS info block, right-aligned --}}
+    {{-- HEADER: DEVIS info block, right-aligned. estimated_start_date intentionally omitted per design spec. --}}
     <div class="doc-header">
         <div class="doc-title">DEVIS</div>
         <div class="doc-number">N° {{ $invoice->number }}</div>
@@ -115,8 +115,10 @@
         </div>
     </div>
 
-    {{-- VAT NOTICE: always shown for devis --}}
+    {{-- VAT NOTICE: shown only for micro-entreprises (TVA = 0) --}}
+    @if($invoice->vat_amount == 0)
     <div class="vat-notice">TVA non applicable, article 293 B du CGI</div>
+    @endif
 
     {{-- PAYMENT CONDITIONS --}}
     @if($invoice->payment_conditions || $company->iban)
