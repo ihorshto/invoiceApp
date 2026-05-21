@@ -71,7 +71,7 @@
             </div>
         </div>
         <div class="invoice-meta">
-            <div class="invoice-label">{{ $invoice->isDevis() ? 'Devis' : 'Facture' }}</div>
+            <div class="invoice-label">Facture</div>
             <div class="invoice-number">{{ $invoice->number }}</div>
             <div>
                 @php
@@ -113,12 +113,6 @@
                 @if($invoice->client->vat_number) TVA : {{ $invoice->client->vat_number }} @endif
             </div>
         </div>
-        @if($invoice->isDevis() && $invoice->chantier_address)
-        <div class="party">
-            <div class="party-label">Adresse du chantier</div>
-            <div class="party-info" style="white-space: pre-wrap;">{{ $invoice->chantier_address }}</div>
-        </div>
-        @endif
     </div>
 
     <div class="dates">
@@ -126,32 +120,17 @@
             <div class="date-label">Date d'émission</div>
             <div class="date-value">{{ $invoice->issue_date->format('d/m/Y') }}</div>
         </div>
-        @if($invoice->isDevis())
-            @if($invoice->valid_until)
-            <div class="date-block">
-                <div class="date-label">Validité</div>
-                <div class="date-value">{{ $invoice->valid_until->format('d/m/Y') }}</div>
-            </div>
-            @endif
-            @if($invoice->estimated_start_date)
-            <div class="date-block">
-                <div class="date-label">Début prévu</div>
-                <div class="date-value">{{ $invoice->estimated_start_date->format('d/m/Y') }}</div>
-            </div>
-            @endif
-        @else
-            @if($invoice->due_date)
-            <div class="date-block">
-                <div class="date-label">Date d'échéance</div>
-                <div class="date-value">{{ $invoice->due_date->format('d/m/Y') }}</div>
-            </div>
-            @endif
-            @if($invoice->paid_at)
-            <div class="date-block">
-                <div class="date-label">Payée le</div>
-                <div class="date-value">{{ $invoice->paid_at->format('d/m/Y') }}</div>
-            </div>
-            @endif
+        @if($invoice->due_date)
+        <div class="date-block">
+            <div class="date-label">Date d'échéance</div>
+            <div class="date-value">{{ $invoice->due_date->format('d/m/Y') }}</div>
+        </div>
+        @endif
+        @if($invoice->paid_at)
+        <div class="date-block">
+            <div class="date-label">Payée le</div>
+            <div class="date-value">{{ $invoice->paid_at->format('d/m/Y') }}</div>
+        </div>
         @endif
     </div>
 
@@ -162,9 +141,7 @@
                 <th class="right" style="width:12%">Prix U. HT</th>
                 <th class="right" style="width:10%">Qté</th>
                 <th class="right" style="width:6%">Unité</th>
-                @if(!$invoice->isDevis())
                 <th class="right" style="width:8%">TVA</th>
-                @endif
                 <th class="right" style="width:14%">Total HT</th>
             </tr>
         </thead>
@@ -175,9 +152,7 @@
                 <td class="right">{{ number_format($item->unit_price, 2, ',', ' ') }} {{ $invoice->currency }}</td>
                 <td class="right">{{ number_format($item->quantity, 2, ',', ' ') }}</td>
                 <td class="right">{{ $item->unit }}</td>
-                @if(!$invoice->isDevis())
                 <td class="right">{{ number_format($item->vat_rate, 1, ',', ' ') }}%</td>
-                @endif
                 <td class="right">{{ number_format($item->total_ht, 2, ',', ' ') }} {{ $invoice->currency }}</td>
             </tr>
             @endforeach
@@ -189,7 +164,6 @@
             <span>Total HT</span>
             <span class="val">{{ number_format($invoice->subtotal, 2, ',', ' ') }} {{ $invoice->currency }}</span>
         </div>
-        @if(!$invoice->isDevis())
         <div class="total-row">
             <span>TVA</span>
             <span class="val">{{ number_format($invoice->vat_amount, 2, ',', ' ') }} {{ $invoice->currency }}</span>
@@ -198,21 +172,15 @@
             <span>Total TTC</span>
             <span>{{ number_format($invoice->total, 2, ',', ' ') }} {{ $invoice->currency }}</span>
         </div>
-        @else
-        <div class="total-row bold">
-            <span>Total HT</span>
-            <span>{{ number_format($invoice->total, 2, ',', ' ') }} {{ $invoice->currency }}</span>
-        </div>
-        @endif
     </div>
 
-    @if($invoice->vat_amount == 0 || $invoice->isDevis())
+    @if($invoice->vat_amount == 0)
     <div style="margin-top:12px; font-size:10px; color:#6b7280; font-style:italic;">
         TVA non applicable, article 293 B du CGI
     </div>
     @endif
 
-    @if($invoice->notes || $invoice->footer || ($invoice->isDevis() && $invoice->payment_conditions))
+    @if($invoice->notes || $invoice->footer)
     <div class="notes-section">
         @if($invoice->notes)
         <div class="notes-block">
@@ -226,27 +194,6 @@
             <div class="notes-text">{{ $invoice->footer }}</div>
         </div>
         @endif
-        @if($invoice->isDevis() && $invoice->payment_conditions)
-        <div class="notes-block">
-            <div class="notes-label">Conditions de paiement</div>
-            <div class="notes-text">{{ $invoice->payment_conditions }}</div>
-        </div>
-        @endif
-    </div>
-    @endif
-
-    @if($invoice->isDevis())
-    <div class="signatures">
-        <div class="signature-box">
-            <strong>Bon pour accord</strong><br>
-            Signature du client<br>
-            <div class="signature-date">Date : ________________________</div>
-        </div>
-        <div class="signature-box">
-            <strong>Signature de l'entreprise</strong><br>
-            {{ $company->name }}<br>
-            <div class="signature-date">Date : ________________________</div>
-        </div>
     </div>
     @endif
 
