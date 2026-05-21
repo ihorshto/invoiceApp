@@ -10,6 +10,7 @@ const drawerOpen = ref(false)
 const navItems = [
     { label: 'ui.nav.dashboard', route: 'dashboard',       match: 'dashboard',    icon: '📊' },
     { label: 'ui.nav.invoices',  route: 'invoices.index',  match: 'invoices.*',   icon: '📄' },
+    { label: 'ui.nav.devis',     route: 'devis.index',     match: 'devis.*',      icon: '📋' },
     { label: 'ui.nav.clients',   route: 'clients.index',   match: 'clients.*',    icon: '👥' },
     { label: 'ui.nav.products',  route: 'products.index',  match: 'products.*',   icon: '📦' },
     { label: 'ui.nav.settings',  route: 'settings.company', match: 'settings.*',  icon: '🏢' },

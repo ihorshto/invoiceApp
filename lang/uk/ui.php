@@ -6,6 +6,7 @@ return [
         'clients'   => 'Клієнти',
         'products'  => 'Товари',
         'invoices'  => 'Рахунки',
+        'devis'     => 'Кошториси',
         'settings'  => 'Налаштування',
         'logout'    => 'Вийти',
         'group'     => ['main' => 'Навігація'],

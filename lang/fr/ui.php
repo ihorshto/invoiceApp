@@ -6,6 +6,7 @@ return [
         'clients'   => 'Clients',
         'products'  => 'Produits',
         'invoices'  => 'Factures',
+        'devis'     => 'Devis',
         'settings'  => 'Paramètres',
         'logout'    => 'Déconnexion',
         'group'     => ['main' => 'Navigation'],
