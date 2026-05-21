@@ -24,8 +24,8 @@ const changeStatus = (newStatus) => {
     router.patch(route('invoices.status', props.invoice.id), { status: newStatus })
 }
 
-const downloadPdf = () => {
-    window.open(route('invoices.pdf', props.invoice.id), '_blank')
+const downloadPdf = (locale) => {
+    window.open(route('invoices.pdf', props.invoice.id) + '?locale=' + locale, '_blank')
 }
 </script>
 
@@ -49,7 +49,8 @@ const downloadPdf = () => {
                     </select>
                 </div>
                 <div class="flex gap-2">
-                    <button @click="downloadPdf" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-sm">↓ PDF</button>
+                    <button @click="downloadPdf('fr')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-sm">🇫🇷 PDF</button>
+                    <button @click="downloadPdf('uk')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-sm">🇺🇦 PDF</button>
                     <Link v-if="['draft','sent'].includes(invoice.status)" :href="route('invoices.edit', invoice.id)"
                         class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-lg text-sm">
                         {{ t('ui.action.edit') }}

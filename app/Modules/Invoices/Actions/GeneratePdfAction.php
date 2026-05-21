@@ -8,11 +8,15 @@ use Illuminate\Http\Response;
 
 class GeneratePdfAction
 {
-    public function stream(Invoice $invoice): Response
+    public function stream(Invoice $invoice, string $locale = 'fr'): Response
     {
         $invoice->load('company', 'client', 'items');
 
-        $pdf = Pdf::loadView('pdf.invoice', [
+        $view = in_array($locale, ['fr', 'uk'], true)
+            ? "pdf.invoice-{$locale}"
+            : 'pdf.invoice-fr';
+
+        $pdf = Pdf::loadView($view, [
             'invoice' => $invoice,
             'company' => $invoice->company,
         ])->setPaper('a4');

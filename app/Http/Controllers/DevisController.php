@@ -159,11 +159,11 @@ class DevisController extends Controller
         return redirect()->route('devis.show', $devis);
     }
 
-    public function pdf(Invoice $devis, GeneratePdfAction $action): \Illuminate\Http\Response
+    public function pdf(Request $request, Invoice $devis, GeneratePdfAction $action): \Illuminate\Http\Response
     {
         abort_unless($devis->isDevis(), 404);
 
-        return $action->stream($devis);
+        return $action->stream($devis, $request->input('locale', 'fr'));
     }
 
     public function convert(Invoice $devis, ConvertToInvoiceAction $action): RedirectResponse

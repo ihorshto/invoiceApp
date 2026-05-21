@@ -135,9 +135,9 @@ class InvoiceController extends Controller
         return redirect()->route('invoices.show', $invoice);
     }
 
-    public function pdf(Invoice $invoice, GeneratePdfAction $action): \Illuminate\Http\Response
+    public function pdf(Request $request, Invoice $invoice, GeneratePdfAction $action): \Illuminate\Http\Response
     {
-        return $action->stream($invoice);
+        return $action->stream($invoice, $request->input('locale', 'fr'));
     }
 
     public function destroy(Invoice $invoice): RedirectResponse

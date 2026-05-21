@@ -33,8 +33,8 @@ const changeStatus = (newStatus) => {
     router.patch(route('devis.status', props.devis.id), { status: newStatus })
 }
 
-const downloadPdf = () => {
-    window.open(route('devis.pdf', props.devis.id), '_blank')
+const downloadPdf = (locale) => {
+    window.open(route('devis.pdf', props.devis.id) + '?locale=' + locale, '_blank')
 }
 
 const convertForm = useForm({})
@@ -63,9 +63,8 @@ const convert = () => {
                     </select>
                 </div>
                 <div class="flex gap-2">
-                    <button @click="downloadPdf" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-sm">
-                        ↓ PDF
-                    </button>
+                    <button @click="downloadPdf('fr')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-sm">🇫🇷 PDF</button>
+                    <button @click="downloadPdf('uk')" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg text-sm">🇺🇦 PDF</button>
                     <Link
                         v-if="['draft', 'sent'].includes(devis.status)"
                         :href="route('devis.edit', devis.id)"
