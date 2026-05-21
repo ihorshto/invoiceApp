@@ -16,6 +16,7 @@ class InvoiceFactory extends Factory
         return [
             'company_id' => Company::factory(),
             'client_id'  => Client::factory(),
+            'type'       => 'invoice',
             'number'     => 'INV-' . now()->format('Y') . '-' . str_pad($this->faker->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT),
             'status'     => 'draft',
             'issue_date' => now()->toDateString(),
@@ -25,5 +26,16 @@ class InvoiceFactory extends Factory
             'total'      => $subtotal + $vat,
             'currency'   => 'EUR',
         ];
+    }
+
+    public function devis(): static
+    {
+        return $this->state(fn () => [
+            'type'        => 'devis',
+            'number'      => 'DEV-' . now()->format('Y') . '-' . str_pad($this->faker->unique()->numberBetween(1, 9999), 4, '0', STR_PAD_LEFT),
+            'status'      => 'draft',
+            'due_date'    => null,
+            'valid_until' => now()->addDays(30)->toDateString(),
+        ]);
     }
 }
