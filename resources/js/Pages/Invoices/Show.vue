@@ -5,7 +5,10 @@ import { useI18n } from '@/Composables/useI18n'
 
 const { t, formatMoney, formatDate } = useI18n()
 
-const props = defineProps({ invoice: Object })
+const props = defineProps({
+    invoice:      Object,
+    sourceDevis:  { type: Object, default: null },
+})
 
 const statusCls = {
     draft:     'bg-gray-100 text-gray-700',
@@ -56,6 +59,10 @@ const downloadPdf = () => {
         </template>
 
         <div class="py-8 max-w-4xl mx-auto px-4 space-y-6">
+            <div v-if="sourceDevis" class="rounded-md bg-violet-50 border border-violet-200 px-4 py-3 text-sm text-violet-800">
+                Créé depuis le devis
+                <Link :href="route('devis.show', sourceDevis.id)" class="font-semibold underline">{{ sourceDevis.number }}</Link>
+            </div>
             <div class="bg-white rounded-xl shadow p-6 grid grid-cols-2 gap-6">
                 <div>
                     <p class="text-xs text-gray-500 uppercase mb-1">{{ t('invoices.fields.client') }}</p>

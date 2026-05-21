@@ -66,8 +66,13 @@ class InvoiceController extends Controller
 
     public function show(Invoice $invoice): Response
     {
+        $invoice->load('client', 'items.product', 'sourceDocument');
+
         return Inertia::render('Invoices/Show', [
-            'invoice' => $invoice->load('client', 'items.product'),
+            'invoice'     => $invoice,
+            'sourceDevis' => $invoice->sourceDocument
+                ? $invoice->sourceDocument->only(['id', 'number'])
+                : null,
         ]);
     }
 
