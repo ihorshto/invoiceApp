@@ -2,15 +2,16 @@
 
 namespace App\Modules\Invoices\Actions;
 
+use App\Enums\DocumentType;
 use App\Models\Company;
 use App\Models\Invoice;
 
 class InvoiceNumberGenerator
 {
-    public function generate(Company $company): string
+    public function generate(Company $company, DocumentType $type = DocumentType::Invoice): string
     {
         $year   = now()->format('Y');
-        $prefix = "INV-{$year}-";
+        $prefix = ($type === DocumentType::Devis ? 'DEV-' : 'INV-') . $year . '-';
 
         $last = Invoice::withoutGlobalScopes()
             ->where('company_id', $company->id)

@@ -20,15 +20,19 @@ class UpdateInvoiceAction
         }
 
         $invoice->update([
-            'client_id'  => $data['client_id'],
-            'issue_date' => $data['issue_date'],
-            'due_date'   => $data['due_date'],
-            'subtotal'   => $subtotal,
-            'vat_amount' => $vatTotal,
-            'total'      => $subtotal + $vatTotal,
-            'currency'   => $data['currency'] ?? 'EUR',
-            'notes'      => $data['notes'] ?? null,
-            'footer'     => $data['footer'] ?? null,
+            'client_id'            => $data['client_id'],
+            'issue_date'           => $data['issue_date'],
+            'due_date'             => $data['due_date'] ?? null,
+            'valid_until'          => $data['valid_until'] ?? null,
+            'estimated_start_date' => $data['estimated_start_date'] ?? null,
+            'subtotal'             => $subtotal,
+            'vat_amount'           => $vatTotal,
+            'total'                => $subtotal + $vatTotal,
+            'currency'             => $data['currency'] ?? 'EUR',
+            'notes'                => $data['notes'] ?? null,
+            'footer'               => $data['footer'] ?? null,
+            'chantier_address'     => $data['chantier_address'] ?? null,
+            'payment_conditions'   => $data['payment_conditions'] ?? null,
         ]);
 
         $invoice->items()->delete();

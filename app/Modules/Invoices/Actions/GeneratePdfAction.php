@@ -17,7 +17,8 @@ class GeneratePdfAction
             'company' => $invoice->company,
         ])->setPaper('a4');
 
-        $filename = "facture-{$invoice->number}.pdf";
+        $prefix   = $invoice->isDevis() ? 'devis' : 'facture';
+        $filename = "{$prefix}-{$invoice->number}.pdf";
 
         return $pdf->stream($filename);
     }

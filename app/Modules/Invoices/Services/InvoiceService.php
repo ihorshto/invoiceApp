@@ -2,17 +2,23 @@
 
 namespace App\Modules\Invoices\Services;
 
+use App\Enums\DocumentType;
 use App\Models\Company;
 use App\Models\Invoice;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class InvoiceService
 {
-    public function list(Company $company, ?string $search, ?string $status): LengthAwarePaginator
-    {
+    public function list(
+        Company $company,
+        ?string $search,
+        ?string $status,
+        DocumentType $type = DocumentType::Invoice
+    ): LengthAwarePaginator {
         return Invoice::withoutGlobalScopes()
             ->with('client:id,name')
             ->where('company_id', $company->id)
+            ->where('type', $type->value)
             ->when($search, fn ($q) => $q->where('number', 'like', "%{$search}%")
                 ->orWhereHas('client', fn ($q2) => $q2->where('name', 'like', "%{$search}%"))
             )

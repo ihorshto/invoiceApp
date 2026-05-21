@@ -2,6 +2,7 @@
 
 namespace App\Modules\Invoices\Actions;
 
+use App\Enums\DocumentType;
 use App\Models\Company;
 use App\Models\Invoice;
 
@@ -11,7 +12,9 @@ class CreateInvoiceAction
 
     public function execute(Company $company, array $data): Invoice
     {
-        $items    = $data['items'] ?? [];
+        $type  = DocumentType::from($data['type'] ?? DocumentType::Invoice->value);
+        $items = $data['items'] ?? [];
+
         $subtotal = 0;
         $vatTotal = 0;
 
@@ -23,17 +26,22 @@ class CreateInvoiceAction
         }
 
         $invoice = $company->invoices()->create([
-            'client_id'  => $data['client_id'],
-            'number'     => $this->generator->generate($company),
-            'status'     => 'draft',
-            'issue_date' => $data['issue_date'],
-            'due_date'   => $data['due_date'],
-            'subtotal'   => $subtotal,
-            'vat_amount' => $vatTotal,
-            'total'      => $subtotal + $vatTotal,
-            'currency'   => $data['currency'] ?? 'EUR',
-            'notes'      => $data['notes'] ?? null,
-            'footer'     => $data['footer'] ?? null,
+            'client_id'            => $data['client_id'],
+            'type'                 => $type,
+            'number'               => $this->generator->generate($company, $type),
+            'status'               => 'draft',
+            'issue_date'           => $data['issue_date'],
+            'due_date'             => $data['due_date'] ?? null,
+            'valid_until'          => $data['valid_until'] ?? null,
+            'estimated_start_date' => $data['estimated_start_date'] ?? null,
+            'subtotal'             => $subtotal,
+            'vat_amount'           => $vatTotal,
+            'total'                => $subtotal + $vatTotal,
+            'currency'             => $data['currency'] ?? 'EUR',
+            'notes'                => $data['notes'] ?? null,
+            'footer'               => $data['footer'] ?? null,
+            'chantier_address'     => $data['chantier_address'] ?? null,
+            'payment_conditions'   => $data['payment_conditions'] ?? null,
         ]);
 
         foreach ($items as $index => $item) {
