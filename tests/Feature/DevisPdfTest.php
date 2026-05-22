@@ -32,7 +32,7 @@ class DevisPdfTest extends TestCase
         $this->assertStringStartsWith('%PDF', $response->getContent());
     }
 
-    public function test_devis_pdf_uses_devis_template(): void
+    public function test_devis_pdf_with_payment_conditions_and_iban(): void
     {
         $user    = User::factory()->create();
         $company = Company::factory()->create([

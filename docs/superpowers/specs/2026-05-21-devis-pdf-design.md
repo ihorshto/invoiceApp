@@ -50,12 +50,12 @@ Redesign the PDF layout for French devis documents. The current `invoice-fr.blad
 
 ### 5. TVA Notice
 - Left-aligned, small italic gray text
-- Always shown: `TVA non applicable, article 293 B du CGI`
+- Shown only when `vat_amount == 0` (micro-entreprise regime): `TVA non applicable, article 293 B du CGI`
 
 ### 6. Payment Conditions
 - Left-aligned block, 10px
 - Shows `payment_conditions` field content (free-text, pre-wrapped)
-- If `iban` or `bic` set on company: appended below as `IBAN : …` / `BIC : …`
+- If `iban` set on company: appended below as `IBAN : …` (Company model has no `bic` field)
 - Section only rendered if any of the above are present
 
 ### 7. Signatures

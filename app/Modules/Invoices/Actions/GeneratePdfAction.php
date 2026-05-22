@@ -15,7 +15,7 @@ class GeneratePdfAction
         $view = match(true) {
             $invoice->isDevis() && $locale === 'fr' => 'pdf.devis-fr',
             $locale === 'fr'                         => 'pdf.invoice-fr',
-            $locale === 'uk'                         => 'pdf.invoice-uk',
+            $locale === 'uk'                         => 'pdf.invoice-uk', // devis+uk uses invoice-uk until a devis-uk template is built
             default                                  => 'pdf.invoice-fr',
         };
 
