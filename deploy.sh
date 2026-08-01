@@ -20,7 +20,7 @@ if [ ! -f vendor/laravel/sail/runtimes/8.5/Dockerfile ]; then
     -u "$(id -u):$(id -g)" \
     -v "$(pwd):/app" \
     composer:2 \
-    install --ignore-platform-reqs --no-dev --optimize-autoloader --no-interaction
+    install --ignore-platform-reqs --no-interaction
 fi
 
 if [ ! -f .env ]; then
