@@ -14,6 +14,16 @@ echo "==> Pulling latest code"
 git fetch origin
 git pull --ff-only origin "$(git rev-parse --abbrev-ref HEAD)"
 
+if [ ! -f vendor/laravel/sail/runtimes/8.5/Dockerfile ]; then
+  echo "==> vendor/ missing (first run) — bootstrapping via a throwaway composer container"
+  docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v "$(pwd):/var/www/html" \
+    -w /var/www/html \
+    laravelsail/php85-composer:latest \
+    composer install --ignore-platform-reqs --no-dev --optimize-autoloader --no-interaction
+fi
+
 if [ ! -f .env ]; then
   echo "==> No .env found — creating from .env.example"
   cp .env.example .env
