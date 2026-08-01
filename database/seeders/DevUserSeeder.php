@@ -16,7 +16,7 @@ class DevUserSeeder extends Seeder
             [
                 'name'     => 'Dev User',
                 'locale'   => 'fr',
-                'password' => Hash::make('password'),
+                'password' => Hash::make(env('DEV_USER_PASSWORD', 'password')),
             ]
         );
 
