@@ -12,13 +12,16 @@ class DevUserSeeder extends Seeder
     public function run(): void
     {
         $user = User::firstOrCreate(
-            ['email' => env('DEV_USER_EMAIL', 'dev@invoiceapp.test')],
+            ['email' => config('devuser.email')],
             [
-                'name'     => 'Dev User',
-                'locale'   => 'fr',
-                'password' => Hash::make(env('DEV_USER_PASSWORD', 'password')),
+                'name'   => 'Dev User',
+                'locale' => 'fr',
             ]
         );
+
+        $user->forceFill([
+            'password' => Hash::make(config('devuser.password')),
+        ])->save();
 
         if (! $user->company) {
             Company::create([
