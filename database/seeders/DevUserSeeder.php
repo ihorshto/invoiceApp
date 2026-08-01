@@ -14,8 +14,9 @@ class DevUserSeeder extends Seeder
         $user = User::firstOrCreate(
             ['email' => config('devuser.email')],
             [
-                'name'   => 'Dev User',
-                'locale' => 'fr',
+                'name'     => 'Dev User',
+                'locale'   => 'fr',
+                'password' => Hash::make(config('devuser.password')),
             ]
         );
 
